@@ -25,12 +25,13 @@ preklady = {
 require 'erubis'
 load 'helper_methods.rb'
 
-template = Erubis::Eruby.new(File.read("template.erb"))
+zvazok_template = Erubis::Eruby.new(File.read("zvazok.erb"))
 puts "V priečinku sa nachádza #{get_fotky.size} fotiek"
-get_fotky.each do |filename|
-  basename = File.basename(filename, ".*")
-  meno = ask "Meno pre #{basename}:"
-  File.write("zvazok_#{basename}.html", template.result(
-    preklady[:cz].merge fotka: "Honey-Badger-Dont-Care.jpg", meno_value: meno
-  ))
+html_array = get_fotky.map do |filename|
+  meno = ask "Meno pre #{filename}:"
+  zvazok_template.result(preklady[:cz].merge fotka: filename, meno_value: meno)
 end
+joined_html = html_array.join page_break
+main_template = Erubis::Eruby.new(File.read("template.erb"))
+full_html = main_template.result joined_html: joined_html
+File.write("zvazky.html", full_html)
