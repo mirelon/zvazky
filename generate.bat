@@ -1,0 +1,2 @@
+ruby zvazky.rb
+pause
