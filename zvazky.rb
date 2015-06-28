@@ -23,7 +23,7 @@ preklady = {
 }
 
 require 'erubis'
-require 'helper_methods.rb'
+load 'helper_methods.rb'
 
 template = Erubis::Eruby.new(File.read("template.erb"))
 puts "V priečinku sa nachádza #{get_fotky.size} fotiek"
