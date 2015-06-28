@@ -1,3 +1,4 @@
+# encoding: utf-8
 preklady = {
   cz: {
     meno_value: "Anička Mrkvičková",
