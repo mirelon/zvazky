@@ -40,14 +40,17 @@ preklady = {
 }
  
 require 'erubis'
+load 'settings.rb'
 load 'helper_methods.rb'
  
 zvazok_template = Erubis::Eruby.new(File.read("zvazok.erb"))
 puts "V priečinku sa nachádza #{get_fotky.size} fotiek"
-html_array = get_fotky.map do |filename|
-  meno = ask "Meno pre #{filename}:"
-  safe_meno = meno.encode("UTF-8", :undef => :replace)
-  zvazok_template.result(preklady[:cz].merge fotka: filename, meno_value: safe_meno)
+File.write "mena.txt", get_fotky.join("\n")
+system("#{editor} mena.txt")
+html_array = File.read("mena.txt").split("\n").map do |line|
+  continue if line.strip.empty?
+  filename, meno = line.strip.split ' ', 2
+  zvazok_template.result(preklady[:cz].merge fotka: filename, meno_value: meno)
 end
 joined_html = html_array.join page_break
 main_template = Erubis::Eruby.new(File.read("template.erb"))
